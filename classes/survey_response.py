@@ -1,30 +1,25 @@
-from survey_api.db import number_available_places, number_survey_responses
+from survey_api.db import number_available_places, number_survey_responses, add_survey_response
 
 class SurveyResponse():
 
-    def __init__(self, survey_id=None, user_id=None):
+    def __init__(self, survey_id=None, user_id=None, created_at=None):
         self.survey_id = survey_id
         self.user_id = user_id
+        self.created_at = created_At
 
     def to_dict(self):
         return {'survey_id': self.survey_id,
-                'user_id': self.user_id
+                'user_id': self.user_id,
+                'created_at': self.created_at
             }
 
-    def add_survey_response(self):
+    def create_survey_response(self):
         avail_places = number_available_places(self.survey_id)
         no_responses = number_survey_responses(self.survey_id)
         remaining_places = avail_places - no_responses
         if remaining_places > 0:
-            self.create_survey_response
-            return {'response': 'success'}
+            self.add_survey_response()
+            return {'status': 'success'}
         else:
             message = f'No available places for survey {self.survey_id}'
-            return {'reponse': 'fail', 'error':message}
-
-
-    def create_survey_response(self):
-        result = add_survey()
-        if result['result'] == 'success':
-            return True
-        return False
+            return {'status': 'fail', 'error':message}
