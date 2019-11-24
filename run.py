@@ -1,5 +1,5 @@
 from flask import Flask, request
-from survey_api.db import connect_db, get_all_surveys, add_survey
+from survey_api.db import connect_db, get_all_surveys, add_survey, number_survey_responses, number_available_places
 import json
 
 from survey_api.classes.survey import SurveyBuilder, Survey
