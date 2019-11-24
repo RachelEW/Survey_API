@@ -3,12 +3,11 @@ import pymongo
 from pymongo import MongoClient
 from pymongo.errors import ServerSelectionTimeoutError, PyMongoError
 
-from flask import current_app, g
-
 def connect_db():
     try:
-        MONGO_URI = 'http://localhost:27017/survey_api'
-        db = MongoClient(MONGO_URI)[surveys_api]
+        MONGO_URI = 'mongodb://localhost:27017/survey_api'
+        client = MongoClient(MONGO_URI)
+        db = client.survey_api
         return db
     except ServerSelectionTimeoutError as exc:
         return {'data':'could not connect to database, server timed out'}
@@ -18,21 +17,21 @@ def connect_db():
 
 def get_all_surveys():
     db = connect_db()
-    all_surveys = list(db.survey_reponses(find()))
+    all_surveys = list(db.surveys.find({}, {'_id': 0}))
     return all_surveys
 
 def add_survey(survey_data):
     db = connect_db()
     response = db.surveys.insert_one(survey_data)
     if response['acknowledged']:
-        return {'result':'success', '_id': response['insertedId']}
+        return {'result':'success'}
     return {'result': 'fail'}
 
 def add_survey_response(response_data):
     db = connect_db()
     response = db.survey_responses.insert_one(response_data)
     if response['acknowledged']:
-        return {'result':'success', '_id': response['insertedId']}
+        return {'result':'success'}
     return {'result': 'fail'}
 
 def number_survey_responses(survey_id):
