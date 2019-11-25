@@ -1,11 +1,11 @@
-from survey_api.db import number_available_places, number_survey_responses, add_survey_response
+from Survey_API.db import number_available_places, number_survey_responses, add_survey_response
 
 class SurveyResponse():
 
     def __init__(self, survey_id=None, user_id=None, created_at=None):
         self.survey_id = survey_id
         self.user_id = user_id
-        self.created_at = created_At
+        self.created_at = created_at
 
     def to_dict(self):
         return {'survey_id': self.survey_id,
@@ -18,7 +18,8 @@ class SurveyResponse():
         no_responses = number_survey_responses(self.survey_id)
         remaining_places = avail_places - no_responses
         if remaining_places > 0:
-            self.add_survey_response()
+            response_data = self.to_dict()
+            add_survey_response(response_data)
             return {'status': 'success'}
         else:
             message = f'No available places for survey {self.survey_id}'

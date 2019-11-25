@@ -1,4 +1,4 @@
-from survey_api.db import survey_builder_assign_id, add_survey
+from Survey_API.db import survey_builder_assign_id, add_survey
 
 class SurveyBuilder():
 

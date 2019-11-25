@@ -1,11 +1,11 @@
 from flask import Flask, request
-from survey_api.db import connect_db, get_all_surveys, add_survey, number_survey_responses, number_available_places
+from Survey_API.db import connect_db, get_all_surveys, add_survey, number_survey_responses, number_available_places
 
 import json
 from datetime import datetime
 
-from survey_api.classes.survey import SurveyBuilder, Survey
-from survey_api.classes.survey_response import SurveyResponse
+from Survey_API.classes.survey import SurveyBuilder, Survey
+from Survey_API.classes.survey_response import SurveyResponse
 
 app = Flask(__name__)
 # app.config.from_object(Config)
@@ -38,7 +38,7 @@ def create_survey_response():
     new_survey_response = SurveyResponse(survey_id=survey_resp_data['survey_id'], user_id=survey_resp_data['user_id'], created_at=timestamp)
     result = new_survey_response.create_survey_response()
     if result['status'] == 'ok':
-        return json.dumps({{'status': 'ok', 'data': 'survey response created'}), 200
+        return json.dumps({'status': 'ok', 'data': 'survey response created'}), 200
     return json.dumps({'status': 'fail', 'error':'Could not create survey response, maximum number of participants exceeded'}), 400
 
 
