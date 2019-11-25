@@ -35,9 +35,10 @@ def create_survey():
 def create_survey_response():
     survey_resp_data = request.json
     timestamp = datetime.utcnow()
-    new_survey_response = SurveyResponse(survey_id=survey_resp_data['survey_id'], user_id=survey_resp_data['user_id'], created_at=timestamp)
-    result = new_survey_response.create_survey_response()
-    if result['status'] == 'ok':
+    new_response = SurveyResponse(survey_id=survey_resp_data['survey_id'], user_id=survey_resp_data['user_id'], created_at=timestamp)
+    result = new_response.create_survey_response()
+    print('THIS IS THE RESULT', result)
+    if result['status'] == 'success':
         return json.dumps({'status': 'ok', 'data': 'survey response created'}), 200
     return json.dumps({'status': 'fail', 'error':'Could not create survey response, maximum number of participants exceeded'}), 400
 

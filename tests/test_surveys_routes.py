@@ -43,9 +43,8 @@ class TestSurveyRoutes(unittest.TestCase):
 
     @patch('Survey_API.run.SurveyResponse.create_survey_response')
     def test_route_checks_available_places_for_survey_response_and_creates_new_response_if_places_available(self, mock_create):
-        mock_create.return_value = True
+        mock_create.return_value = {'status': 'success'}
         result = self.app.post('/survey_responses', json=self.survey_response_fail)
-        print('response result', result.data)
         self.assertEquals(result.status_code, 200)
 
 
