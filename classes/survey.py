@@ -30,6 +30,6 @@ class Survey():
     def create_survey(self):
         survey_data = self.to_dict()
         result = add_survey(survey_data)
-        if result['result'] == 'success':
+        if result['db_result'] == 'success':
             return True
         return False

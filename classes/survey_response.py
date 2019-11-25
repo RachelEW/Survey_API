@@ -20,9 +20,9 @@ class SurveyResponse():
         if remaining_places > 0:
             response_data = self.to_dict()
             result = add_survey_response(response_data)
-            if result['status'] == 'success':
+            if result['db_result'] == 'success':
                 return {'status': 'success'}
-            elif result['status'] == 'fail':
+            elif result['db_result'] == 'fail':
                 message = f'Database error occured whilst adding response for survey {self.survey_id}'
             return {'status': 'fail', 'error':message}
         else:

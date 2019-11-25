@@ -1,6 +1,7 @@
 import random
 import pymongo
 from pymongo import MongoClient
+from pymongo.results import InsertOneResult
 from pymongo.errors import ServerSelectionTimeoutError, PyMongoError
 
 def connect_db():
@@ -24,16 +25,16 @@ def get_all_surveys():
 def add_survey(survey_data):
     db = connect_db()
     response = db.surveys.insert_one(survey_data)
-    if response.insertedId is not None:
-        return {'result':'success'}
-    return {'result': 'fail'}
+    if isinstance(response, InsertOneResult):
+        return {'db_result':'success'}
+    return {'db_result': 'fail'}
 
 def add_survey_response(response_data):
     db = connect_db()
     response = db.survey_responses.insert_one(response_data)
-    if response.insertedId is not None:
-        return {'result':'success'}
-    return {'result': 'fail'}
+    if isinstance(response, InsertOneResult):
+        return {'db_result':'success'}
+    return {'db_result': 'fail'}
 
 def number_survey_responses(survey_id):
     db = connect_db()
@@ -42,8 +43,8 @@ def number_survey_responses(survey_id):
 
 def number_available_places(survey_id):
     db = connect_db()
-    avail_places_dict = db.surveys.find({'survey_id': survey_id}, {'available_places': 1, '_id': 0})
-    number_avail_places = avail_places_dict['available_places']
+    avail_places_db = list(db.surveys.find({'survey_id': survey_id}, {'available_places': 1, '_id': 0}))
+    number_avail_places = avail_places_db[0]['available_places']
     return number_avail_places
 
 def survey_builder_assign_id():

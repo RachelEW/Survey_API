@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from Survey_API.db import connect_db, get_all_surveys, add_survey, number_survey_responses, number_available_places
 
 import json
@@ -17,8 +17,8 @@ app.config['MONGO_URI'] = connect_db()
 def all_surveys():
     results = get_all_surveys()
     if isinstance(results, list):
-        return json.dumps({'status': 'ok', 'data': results}), 200
-    return json.dumps({'status': 'ok', 'data':'No surveys in database'}), 200
+        return jsonify({'status': 'ok', 'data': results}), 200
+    return jsonify({'status': 'ok', 'data':'No surveys in database'}), 200
 
 @app.route('/surveys', methods=['POST'])
 def create_survey():
@@ -28,8 +28,8 @@ def create_survey():
     result = new_survey.create_survey()
     if result:
         message = f'Survey successfully created with survey ID {new_survey.survey_id}'
-        return json.dumps({'status': 'ok', 'data': message}), 200
-    return json.dumps({'status': 'fail', 'data': 'could not create new survey'}), 400
+        return jsonify({'status': 'ok', 'data': message}), 201
+    return jsonify({'status': 'fail', 'error': 'could not create new survey'}), 500
 
 @app.route('/survey_responses', methods=['POST'])
 def create_survey_response():
@@ -37,10 +37,9 @@ def create_survey_response():
     timestamp = datetime.utcnow()
     new_response = SurveyResponse(survey_id=survey_resp_data['survey_id'], user_id=survey_resp_data['user_id'], created_at=timestamp)
     result = new_response.create_survey_response()
-    print('THIS IS THE RESULT', result)
     if result['status'] == 'success':
-        return json.dumps({'status': 'ok', 'data': 'survey response created'}), 200
-    return json.dumps({'status': 'fail', 'error':'Could not create survey response, maximum number of participants exceeded'}), 400
+        return jsonify({'status': 'ok', 'data': 'survey response created'}), 201
+    return jsonify({'status': 'fail', 'error':'Could not create survey response, maximum number of participants exceeded'}), 400
 
 
 if __name__ == "__main__":
