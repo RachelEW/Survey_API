@@ -39,8 +39,8 @@ def create_survey_response():
     result = new_response.create_survey_response()
     if result['status'] == 'success':
         return jsonify({'status': 'ok', 'data': 'survey response created'}), 201
-    return jsonify({'status': 'fail', 'error':'Could not create survey response, maximum number of participants exceeded'}), 400
+    return jsonify({'status': 'fail', 'error': result['error']}), 400
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()

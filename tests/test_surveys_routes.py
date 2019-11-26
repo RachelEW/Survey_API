@@ -16,7 +16,7 @@ class TestSurveyRoutes(unittest.TestCase):
             'user_id': 8756,
         }
         self.survey_response_fail = {
-            'survey_id': 390373,
+            'survey_id': 88765,
             'user_id': 8756,
         }
         self.all_surveys = [{"survey_name" : "Test Survey", "survey_id" : "098430", "available_places" : 23, "user_id" : "3214" },
@@ -63,3 +63,9 @@ class TestSurveyRoutes(unittest.TestCase):
         mock_create.return_value = {'status': 'success'}
         result = self.app.post('/survey_responses', json=self.survey_response_success)
         self.assertEquals(result.status_code, 201)
+
+    @patch('run.SurveyResponse.create_survey_response')
+    def test_route_checks_available_places_for_survey_response_and_returns_error_if_no_places_available(self, mock_create):
+        mock_create.return_value = {'status': 'fail', 'error':'Could not create survey response, maximum number of responses reached for survey 88765'}
+        result = self.app.post('/survey_responses', json=self.survey_response_fail)
+        self.assertEquals(result.status_code, 400)

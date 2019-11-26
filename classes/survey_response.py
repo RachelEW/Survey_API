@@ -24,7 +24,7 @@ class SurveyResponse():
                 return {'status': 'success'}
             elif result['db_result'] == 'fail':
                 message = f'Database error occured whilst adding response for survey {self.survey_id}'
-            return {'status': 'fail', 'error':message}
+            return {'status': 'fail', 'error': message}
         else:
-            message = f'No available places for survey {self.survey_id}'
-            return {'status': 'fail', 'error':message}
+            message = f'Could not create survey response, maximum number of responses reached for survey {self.survey_id}'
+            return {'status': 'fail', 'error': message}
