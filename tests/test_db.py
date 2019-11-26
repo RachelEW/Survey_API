@@ -1,8 +1,6 @@
 import unittest
-from unittest.mock import patch, Mock, PropertyMock
-from db import (connect_db, get_all_surveys, add_survey,
-                add_survey_response, number_survey_responses, number_available_places,
-                survey_builder_assign_id)
+from unittest.mock import patch
+from db import survey_builder_assign_id
 
 class TestSurveyRoutes(unittest.TestCase):
     
