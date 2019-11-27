@@ -8,7 +8,7 @@ New entries for survey responses can be added provided that the maximum number o
 
 ## Installation
 
-Python3.7 is required.
+Python 3 is required.
 
 MongoDB is required for this project. [Installation guides](https://docs.mongodb.com/manual/administration/install-community/)
 
